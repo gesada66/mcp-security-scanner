@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { detectTrojanServers, detectOverPrivilegedTools, detectExfilChains, detectIdentityIssues, detectThreats } from "@/lib/threats";
-import type { MCPServerConfig, ToolScopeConfig, GraphConfig, IdentityConfig } from "@/lib/types";
+import { detectTrojanServers, detectOverPrivilegedTools, detectExfilChains, detectIdentityIssues, detectMemoryPoisoning, detectThreats } from "@/lib/threats";
+import type { MCPServerConfig, ToolScopeConfig, GraphConfig, IdentityConfig, MemoryConfig } from "@/lib/types";
 
 describe("Threat Detection - Step 1 (Trojan Servers)", () => {
 	describe("Trojan Server Detection", () => {
@@ -530,6 +530,153 @@ describe("Threat Detection - Step 4 (Identity Issues Detection)", () => {
 			const findings = detectThreats(configs);
 			expect(findings.length).toBeGreaterThan(0);
 			expect(findings.some(f => f.id === "MCP-011-IDENTITY-SHARED")).toBe(true);
+		});
+	});
+});
+
+describe("Threat Detection - Step 5 (Memory Poisoning Detection)", () => {
+	describe("Memory Poisoning Detection", () => {
+		it("detects persistent memory without sanitization", () => {
+			const config: MemoryConfig = {
+				memory: {
+					persistent: true,
+					sanitization: false,
+					retentionHours: 12,
+					approvalForWrites: true
+				}
+			};
+
+			const findings = detectMemoryPoisoning(config);
+			expect(findings).toHaveLength(1);
+			expect(findings[0].id).toBe("MCP-017-MEMORY-UNSANITIZED");
+			expect(findings[0].severity).toBe("critical");
+		});
+
+		it("detects excessive memory retention period", () => {
+			const config: MemoryConfig = {
+				memory: {
+					persistent: false,
+					sanitization: true,
+					retentionHours: 48, // 2 days
+					approvalForWrites: true
+				}
+			};
+
+			const findings = detectMemoryPoisoning(config);
+			expect(findings).toHaveLength(1);
+			expect(findings[0].id).toBe("MCP-018-MEMORY-LONG-RETENTION");
+			expect(findings[0].severity).toBe("high");
+		});
+
+		it("detects very long memory retention period", () => {
+			const config: MemoryConfig = {
+				memory: {
+					persistent: false,
+					sanitization: true,
+					retentionHours: 240, // 10 days
+					approvalForWrites: true
+				}
+			};
+
+			const findings = detectMemoryPoisoning(config);
+			expect(findings).toHaveLength(2); // Should detect both long and very long retention
+			expect(findings.some(f => f.id === "MCP-019-MEMORY-VERY-LONG-RETENTION")).toBe(true);
+			expect(findings.some(f => f.id === "MCP-018-MEMORY-LONG-RETENTION")).toBe(true);
+		});
+
+		it("detects persistent memory writes without approval gates", () => {
+			const config: MemoryConfig = {
+				memory: {
+					persistent: true,
+					sanitization: true,
+					retentionHours: 12,
+					approvalForWrites: false
+				}
+			};
+
+			const findings = detectMemoryPoisoning(config);
+			expect(findings).toHaveLength(1);
+			expect(findings[0].id).toBe("MCP-020-MEMORY-NO-APPROVAL");
+			expect(findings[0].severity).toBe("medium");
+		});
+
+		it("detects multiple memory poisoning risk factors", () => {
+			const config: MemoryConfig = {
+				memory: {
+					persistent: true,
+					sanitization: false,
+					retentionHours: 48, // 2 days
+					approvalForWrites: false
+				}
+			};
+
+			const findings = detectMemoryPoisoning(config);
+			expect(findings.length).toBeGreaterThanOrEqual(4);
+			
+			// Should detect unsanitized persistent memory
+			expect(findings.some(f => f.id === "MCP-017-MEMORY-UNSANITIZED")).toBe(true);
+			// Should detect long retention
+			expect(findings.some(f => f.id === "MCP-018-MEMORY-LONG-RETENTION")).toBe(true);
+			// Should detect no approval gates
+			expect(findings.some(f => f.id === "MCP-020-MEMORY-NO-APPROVAL")).toBe(true);
+			// Should detect multiple risks
+			expect(findings.some(f => f.id === "MCP-021-MEMORY-MULTIPLE-RISKS")).toBe(true);
+		});
+
+		it("detects all memory poisoning issues in complex configuration", () => {
+			const config: MemoryConfig = {
+				memory: {
+					persistent: true,
+					sanitization: false,
+					retentionHours: 240, // 10 days
+					approvalForWrites: false
+				}
+			};
+
+			const findings = detectMemoryPoisoning(config);
+			expect(findings.length).toBeGreaterThanOrEqual(5);
+			
+			// Should detect unsanitized persistent memory
+			expect(findings.some(f => f.id === "MCP-017-MEMORY-UNSANITIZED")).toBe(true);
+			// Should detect very long retention
+			expect(findings.some(f => f.id === "MCP-019-MEMORY-VERY-LONG-RETENTION")).toBe(true);
+			// Should detect long retention
+			expect(findings.some(f => f.id === "MCP-018-MEMORY-LONG-RETENTION")).toBe(true);
+			// Should detect no approval gates
+			expect(findings.some(f => f.id === "MCP-020-MEMORY-NO-APPROVAL")).toBe(true);
+			// Should detect multiple risks
+			expect(findings.some(f => f.id === "MCP-021-MEMORY-MULTIPLE-RISKS")).toBe(true);
+		});
+
+		it("passes clean memory configuration", () => {
+			const config: MemoryConfig = {
+				memory: {
+					persistent: false,
+					sanitization: true,
+					retentionHours: 12,
+					approvalForWrites: true
+				}
+			};
+
+			const findings = detectMemoryPoisoning(config);
+			expect(findings).toHaveLength(0);
+		});
+
+		it("handles memory detection in orchestrator", () => {
+			const configs = {
+				memory: {
+					memory: {
+						persistent: true,
+						sanitization: false,
+						retentionHours: 48,
+						approvalForWrites: false
+					}
+				} as MemoryConfig
+			};
+
+			const findings = detectThreats(configs);
+			expect(findings.length).toBeGreaterThan(0);
+			expect(findings.some(f => f.id === "MCP-017-MEMORY-UNSANITIZED")).toBe(true);
 		});
 	});
 });

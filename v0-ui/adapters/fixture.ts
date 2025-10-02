@@ -21,7 +21,7 @@ export async function fetchFixturePayload(path: string = "/scorecard.json"): Pro
 }
 
 import { detectThreats } from "@/lib/threats";
-import type { MCPServerConfig, ToolScopeConfig, GraphConfig, IdentityConfig } from "@/lib/types";
+import type { MCPServerConfig, ToolScopeConfig, GraphConfig, IdentityConfig, MemoryConfig } from "@/lib/types";
 
 /**
  * Threat-specific fixture adapters for Phase 3 validation.
@@ -70,6 +70,18 @@ export async function fetchIdentityFixture(path: string): Promise<FixturePayload
 	const config = (await res.json()) as IdentityConfig;
 	
 	const findings = detectThreats({ identity: config });
+	return { findings };
+}
+
+/**
+ * Step 5: Memory poisoning detection
+ */
+export async function fetchMemoryFixture(path: string): Promise<FixturePayload> {
+	const res = await fetch(path, { cache: "no-store" });
+	if (!res.ok) throw new Error(`Failed to load memory fixture: ${res.status}`);
+	const config = (await res.json()) as MemoryConfig;
+	
+	const findings = detectThreats({ memory: config });
 	return { findings };
 }
 

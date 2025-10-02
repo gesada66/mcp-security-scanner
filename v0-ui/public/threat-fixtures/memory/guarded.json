@@ -1,0 +1,14 @@
+{
+  "memory": {
+    "persistent": false,
+    "sanitization": true,
+    "retentionHours": 12,
+    "approvalForWrites": true
+  },
+  "metadata": {
+    "name": "Guarded Memory Configuration",
+    "description": "Secure memory configuration with ephemeral storage, sanitization, short retention, and approval gates",
+    "riskLevel": "low",
+    "threats": []
+  }
+}

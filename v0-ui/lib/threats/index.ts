@@ -391,9 +391,77 @@ export function detectIdentityIssues(config: IdentityConfig): RiskFinding[] {
 	return findings;
 }
 
+/**
+ * Detect memory poisoning risks based on sanitization and retention policies.
+ * Step 5 implementation.
+ */
 export function detectMemoryPoisoning(config: MemoryConfig): RiskFinding[] {
-	// Step 6 implementation
-	return [];
+	const findings: RiskFinding[] = [];
+
+	// Check for persistent memory without sanitization
+	if (config.memory.persistent && !config.memory.sanitization) {
+		findings.push({
+			id: "MCP-017-MEMORY-UNSANITIZED",
+			title: "Persistent memory without sanitization",
+			severity: "critical",
+			rationale: "Persistent memory without sanitization allows data to persist across sessions, creating poisoning risks",
+			remediation: "Enable memory sanitization or use ephemeral memory for sensitive data"
+		});
+	}
+
+	// Check for excessive retention periods
+	if (config.memory.retentionHours > 24) {
+		const days = Math.round(config.memory.retentionHours / 24);
+		findings.push({
+			id: "MCP-018-MEMORY-LONG-RETENTION",
+			title: "Excessive memory retention period",
+			severity: "high",
+			rationale: `Memory retention of ${days} days increases risk of data poisoning and unauthorised access`,
+			remediation: "Reduce memory retention to minimum required for operation (recommended: ≤24 hours)"
+		});
+	}
+
+	// Check for very long retention periods
+	if (config.memory.retentionHours > 168) { // 7 days
+		const days = Math.round(config.memory.retentionHours / 24);
+		findings.push({
+			id: "MCP-019-MEMORY-VERY-LONG-RETENTION",
+			title: "Very long memory retention period",
+			severity: "critical",
+			rationale: `Memory retention of ${days} days creates significant poisoning and data exposure risks`,
+			remediation: "Immediately reduce memory retention period and implement proper data lifecycle management"
+		});
+	}
+
+	// Check for missing approval gates on memory writes
+	if (config.memory.persistent && !config.memory.approvalForWrites) {
+		findings.push({
+			id: "MCP-020-MEMORY-NO-APPROVAL",
+			title: "Persistent memory writes without approval gates",
+			severity: "medium",
+			rationale: "Persistent memory writes without approval gates allow uncontrolled data modification",
+			remediation: "Implement approval gates for persistent memory writes or use read-only memory"
+		});
+	}
+
+	// Check for combination of high-risk factors
+	const riskFactors = [
+		config.memory.persistent && !config.memory.sanitization,
+		config.memory.retentionHours > 24,
+		!config.memory.approvalForWrites
+	].filter(Boolean).length;
+
+	if (riskFactors >= 2) {
+		findings.push({
+			id: "MCP-021-MEMORY-MULTIPLE-RISKS",
+			title: "Multiple memory poisoning risk factors detected",
+			severity: "critical",
+			rationale: `Configuration has ${riskFactors} high-risk factors that compound memory poisoning risks`,
+			remediation: "Review and mitigate all identified memory security risks before deployment"
+		});
+	}
+
+	return findings;
 }
 
 /**

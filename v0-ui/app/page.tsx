@@ -7,7 +7,7 @@ import { ThemeCard } from "@/components/theme/theme-card";
 import { ThemeButton } from "@/components/theme/theme-button";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { fetchFixturePayload, fetchTrojanServerFixture, fetchToolScopeFixture, fetchGraphFixture, fetchIdentityFixture, type FixturePayload } from "@/adapters/fixture";
+import { fetchFixturePayload, fetchTrojanServerFixture, fetchToolScopeFixture, fetchGraphFixture, fetchIdentityFixture, fetchMemoryFixture, type FixturePayload } from "@/adapters/fixture";
 import { generateScorecard } from "@/lib/scoring";
 import type { RiskFinding } from "@/lib/types";
 import { ScoreBadge } from "@/components/score/score-badge";
@@ -52,6 +52,8 @@ const [copySuccess, setCopySuccess] = useState<boolean>(false);
 						payload = await fetchGraphFixture(source);
 					} else if (source.includes("/identity/")) {
 						payload = await fetchIdentityFixture(source);
+					} else if (source.includes("/memory/")) {
+						payload = await fetchMemoryFixture(source);
 					} else {
 						payload = await fetchFixturePayload(source);
 					}
@@ -212,6 +214,8 @@ useMemo(() => score, [score]);
                             <option value="/threat-fixtures/graph/safe.json">Safe Graph (Good)</option>
                             <option value="/threat-fixtures/identity/shared.json">Shared Identity (Bad)</option>
                             <option value="/threat-fixtures/identity/ephemeral.json">Ephemeral Identity (Good)</option>
+                            <option value="/threat-fixtures/memory/open.json">Open Memory (Bad)</option>
+                            <option value="/threat-fixtures/memory/guarded.json">Guarded Memory (Good)</option>
                         </select>
                     </div>
                     <div className="flex items-center gap-3">

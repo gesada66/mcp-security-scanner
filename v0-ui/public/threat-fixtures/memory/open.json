@@ -1,0 +1,20 @@
+{
+  "memory": {
+    "persistent": true,
+    "sanitization": false,
+    "retentionHours": 240,
+    "approvalForWrites": false
+  },
+  "metadata": {
+    "name": "Open Memory Configuration",
+    "description": "High-risk memory configuration with persistent storage, no sanitization, long retention, and no approval gates",
+    "riskLevel": "critical",
+    "threats": [
+      "MCP-017-MEMORY-UNSANITIZED",
+      "MCP-019-MEMORY-VERY-LONG-RETENTION", 
+      "MCP-018-MEMORY-LONG-RETENTION",
+      "MCP-020-MEMORY-NO-APPROVAL",
+      "MCP-021-MEMORY-MULTIPLE-RISKS"
+    ]
+  }
+}

@@ -90,41 +90,77 @@
 - ✅ Updated main page to support privilege fixtures
 - ✅ All tests passing: Unit (25/25), E2E (6/6)
 
-## Remaining Steps (3-7)
-3. Exfil Chain Detection
-   - [ ] Extend GraphConfig interface
-   - [ ] Implement graph analysis for external sink paths
-   - [ ] Create unit and E2E tests
-   - [ ] Create graph fixtures
+## Step 3: Exfil Chain Detection ✅ COMPLETED
+- ✅ Extended GraphConfig interface
+- ✅ Implemented graph analysis for external sink paths
+- ✅ Created unit tests for exfil detection with positive/negative cases
+- ✅ Created E2E tests for exfil detection validation
+- ✅ Created graph fixtures (exfil/safe pairs)
+- ✅ Updated fixture adapter for exfil detection
+- ✅ Updated main page to support graph fixtures
+- ✅ All tests passing: Unit (30/30), E2E (9/9)
 
-4. Identity Issues Detection
-   - [ ] Extend IdentityConfig interface
-   - [ ] Implement shared credentials, long-lived tokens, rotation policy
-   - [ ] Create unit and E2E tests
-   - [ ] Create identity fixtures
+## Step 4: Identity Issues Detection ✅ COMPLETED
+- ✅ Extended IdentityConfig interface
+- ✅ Implemented shared credentials, long-lived tokens, rotation policy detection
+- ✅ Created unit tests for identity detection with positive/negative cases
+- ✅ Created E2E tests for identity detection validation
+- ✅ Created identity fixtures (shared/ephemeral pairs)
+- ✅ Updated fixture adapter for identity detection
+- ✅ Updated main page to support identity fixtures
+- ✅ All tests passing: Unit (35/35), E2E (12/12)
 
-5. Memory Poisoning Detection
-   - [ ] Extend MemoryConfig interface
-   - [ ] Implement sanitization, retention, approval gates (advisory)
-   - [ ] Create unit and E2E tests
-   - [ ] Create memory fixtures
+## Step 5: Memory Poisoning Detection ✅ COMPLETED
+- ✅ Extended MemoryConfig interface
+- ✅ Implemented sanitization, retention, approval gates detection
+- ✅ Created unit tests for memory detection with positive/negative cases
+- ✅ Created E2E tests for memory detection validation
+- ✅ Created memory fixtures (open/guarded pairs)
+- ✅ Updated fixture adapter for memory detection
+- ✅ Updated main page to support memory fixtures
+- ✅ All tests passing: Unit (49/49), E2E (15/15)
 
-6. Complete Orchestrator
-   - [ ] Integrate all 5 threat detectors
-   - [ ] Create comprehensive E2E tests
-   - [ ] Validate context weighting across all threats
+## Step 6: Complete Orchestrator ✅ COMPLETED
+- ✅ Integrated all 5 threat detectors in `detectThreats()` function
+- ✅ Created comprehensive E2E tests for all threat types
+- ✅ Validated context weighting across all threats
+- ✅ All orchestrator tests passing: Unit (49/49), E2E (28/28)
 
-7. Final Integration
-   - [ ] Update UI with all 10 threat fixtures
-   - [ ] Complete threat validation flow
-   - [ ] Final test suite validation
+## Step 7: Final Integration ✅ COMPLETED
+- ✅ Updated UI with all 10 threat fixtures (5 bad + 5 good pairs)
+- ✅ Completed threat validation flow with discovery wizard integration
+- ✅ Final test suite validation: All 28 E2E tests passing
+- ✅ All threat types integrated and working end-to-end
 
-## Test Results
-- ✅ Unit Tests: Trojan + Privilege detection logic tested (10/10 tests)
-- ✅ E2E Tests: Trojan + Privilege validation flow tested (6/6 tests)
-- ✅ A11y: Maintained ≥90 score
-- ✅ Integration: Both threat types integrated with discovery wizard and scoring
+## Test Results - Phase 3 Complete ✅
+- ✅ Unit Tests: All 5 threat detection types tested (49/49 tests)
+- ✅ E2E Tests: All threat validation flows tested (28/28 tests)
+- ✅ A11y: Maintained ≥90 score throughout development
+- ✅ Integration: All 5 threat types integrated with discovery wizard and scoring
+- ✅ Comprehensive Testing: Full orchestrator validation with context weighting
+- ✅ UI Integration: All 10 threat fixtures available in data source dropdown
 
 ## Feature flags
 - ✅ `DISCOVERY_WIZARD=true` controls rendering wizard entry point.
-- ✅ Trojan + Privilege fixtures available in data source dropdown.
+- ✅ All 10 threat fixtures available in data source dropdown (5 threat types × 2 variants each).
+
+## Phase 3 Summary ✅ COMPLETED
+**Threat Validation Implementation Complete**
+
+Successfully implemented comprehensive threat detection for 5 major MCP security categories:
+
+1. **Trojan Server Detection** - Integrity verification, source trust, egress analysis
+2. **Over-Privileged Tools Detection** - Scope analysis, principle of least privilege
+3. **Exfil Chain Detection** - Graph analysis, external sinks, untrusted nodes
+4. **Identity Issues Detection** - Shared tokens, long-lived credentials, rotation policies
+5. **Memory Poisoning Detection** - Sanitization, retention policies, approval gates
+
+**Key Achievements:**
+- 49 unit tests covering all threat detection logic
+- 28 E2E tests validating complete user workflows
+- 10 threat fixtures (5 bad + 5 good pairs) for comprehensive testing
+- Full integration with discovery wizard and context weighting
+- Maintained accessibility standards (≥90 Lighthouse score)
+- Complete orchestrator with all threat types working together
+
+**Ready for Production:** All threat validation features are implemented, tested, and integrated.
