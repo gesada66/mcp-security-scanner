@@ -164,3 +164,108 @@ Successfully implemented comprehensive threat detection for 5 major MCP security
 - Complete orchestrator with all threat types working together
 
 **Ready for Production:** All threat validation features are implemented, tested, and integrated.
+
+## 📋 **Detailed Phase 3 Feature Documentation**
+
+### 🛡️ **Threat Detection Capabilities**
+
+#### **1. Trojan Server Detection (MCP-001 to MCP-003)**
+- **Integrity Verification**: Detects hash mismatches and tampering indicators
+- **Source Trust Analysis**: Validates server sources against trusted registries
+- **Egress Monitoring**: Identifies suspicious network connections and data exfiltration paths
+- **Risk Levels**: Critical (integrity failure, suspicious egress), High (untrusted source)
+
+#### **2. Over-Privileged Tools Detection (MCP-004 to MCP-006)**
+- **Scope Analysis**: Validates tool permissions against intended functionality
+- **Principle of Least Privilege**: Ensures tools only have necessary access rights
+- **Context-Aware**: Adjusts severity based on data sensitivity (regulated, PII environments)
+- **Risk Levels**: High (filesystem access on non-file tools), Medium (mail access on non-mail tools)
+
+#### **3. Exfil Chain Detection (MCP-007 to MCP-010)**
+- **Graph Analysis**: Traces data flow paths through MCP server networks
+- **External Sink Detection**: Identifies suspicious external data destinations
+- **Trust Validation**: Flags untrusted nodes in data processing chains
+- **Chain Length Analysis**: Detects overly complex data flows that may indicate exfiltration
+- **Risk Levels**: Critical (external sinks, direct sensitive paths), High (untrusted nodes), Medium (long chains)
+
+#### **4. Identity Issues Detection (MCP-011 to MCP-016)**
+- **Shared Credential Detection**: Identifies tokens used across multiple services
+- **Token Lifecycle Management**: Validates TTL policies and rotation schedules
+- **Usage Pattern Analysis**: Detects excessive token usage and privilege violations
+- **Policy Compliance**: Ensures adherence to security best practices
+- **Risk Levels**: Critical (very long-lived tokens), High (shared tokens, no rotation), Medium (weak policies)
+
+#### **5. Memory Poisoning Detection (MCP-017 to MCP-021)**
+- **Sanitization Validation**: Ensures memory is properly cleared between sessions
+- **Retention Policy Analysis**: Validates data retention periods and lifecycle management
+- **Approval Gate Verification**: Ensures controlled access to persistent memory
+- **Risk Factor Correlation**: Detects multiple compounding security risks
+- **Risk Levels**: Critical (unsanitized persistent memory, very long retention), High (excessive retention), Medium (missing approval gates)
+
+### 🔧 **Technical Implementation Details**
+
+#### **Detection Engine Architecture**
+- **Modular Design**: Each threat type has dedicated detection functions
+- **Orchestrator Pattern**: Central `detectThreats()` function coordinates all detectors
+- **Type Safety**: Full TypeScript implementation with comprehensive interfaces
+- **Extensible**: Easy to add new threat types following established patterns
+
+#### **Testing Strategy**
+- **Unit Tests**: 49 tests covering individual detection logic and edge cases
+- **E2E Tests**: 28 tests validating complete user workflows and integrations
+- **Fixture-Based Testing**: 10 realistic test scenarios (5 bad + 5 good configurations)
+- **Context Validation**: Tests verify discovery wizard integration and weighting
+
+#### **Integration Points**
+- **Discovery Wizard**: Context weighting affects threat severity calculations
+- **Scoring Engine**: Findings integrate with weighted risk scoring system
+- **UI Components**: Seamless integration with existing scorecard interface
+- **Data Sources**: Support for JSON configuration files and real-time analysis
+
+### 📊 **Risk Assessment Framework**
+
+#### **Severity Classification**
+- **Critical**: Immediate security threats requiring urgent attention
+- **High**: Significant security risks that should be addressed promptly
+- **Medium**: Moderate risks that should be planned for remediation
+- **Low**: Minor issues that can be addressed in regular maintenance
+
+#### **Context-Aware Weighting**
+- **Environment Type**: Production environments receive higher risk multipliers
+- **Data Sensitivity**: Regulated/PII data increases threat severity
+- **Compliance Requirements**: Industry standards influence risk calculations
+- **Exposure Level**: Public-facing systems receive additional scrutiny
+
+### 🎯 **Usage Scenarios**
+
+#### **Development Teams**
+- **Pre-deployment Scanning**: Validate MCP configurations before production
+- **CI/CD Integration**: Automated security checks in deployment pipelines
+- **Configuration Review**: Regular assessment of MCP server security posture
+
+#### **Security Teams**
+- **Risk Assessment**: Comprehensive evaluation of MCP security landscape
+- **Compliance Auditing**: Validate adherence to security policies and standards
+- **Incident Response**: Identify and prioritize security findings for remediation
+
+#### **DevOps Teams**
+- **Infrastructure Monitoring**: Continuous validation of MCP server configurations
+- **Policy Enforcement**: Ensure consistent security practices across environments
+- **Automated Remediation**: Integration with security automation tools
+
+### 🔮 **Future Enhancement Opportunities**
+
+#### **Advanced Detection**
+- **Machine Learning**: Behavioral analysis for anomaly detection
+- **Real-time Monitoring**: Continuous threat detection and alerting
+- **Custom Rules**: User-defined security policies and detection rules
+
+#### **Integration Expansion**
+- **SIEM Integration**: Export findings to security information systems
+- **API Endpoints**: RESTful API for programmatic access
+- **Webhook Support**: Real-time notifications for security events
+
+#### **Reporting & Analytics**
+- **Trend Analysis**: Historical security posture tracking
+- **Executive Dashboards**: High-level security metrics and KPIs
+- **Compliance Reporting**: Automated generation of audit reports

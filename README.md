@@ -31,12 +31,14 @@ npm run dev:3001
 - **Milestone 3**: Environment configuration and data source switching
 - **Milestone 4**: Dark mode, export functionality, and documentation
 - **Phase 2**: Discovery Wizard with context-aware scoring and comprehensive testing
+- **Phase 3**: Comprehensive Threat Validation with 5 major security detection categories
 
 ### 🎯 Current Features
 - **Weighted Risk Scoring**: Critical (10) > High (6) > Medium (3) > Low (1)
 - **Environment Multipliers**: Production (1.25x), Data Sensitivity (1.1x)
 - **Discovery Wizard**: Interactive context configuration with 5-step questionnaire
 - **Context-Aware Scoring**: Dynamic risk weights based on deployment context
+- **Comprehensive Threat Detection**: 5 major MCP security categories with 21 specific threat types
 - **Dark/Light Theme**: Toggle with next-themes integration
 - **Export Options**: JSON download and clipboard copy
 - **Accessibility**: 98/100 a11y score with WCAG 2 AA compliance
@@ -45,10 +47,11 @@ npm run dev:3001
 ## 🧪 Testing Strategy
 
 ### Required for All Environments
-- **Unit Tests**: `npm run test:coverage` (≥80% coverage)
-- **E2E Tests**: `npm run e2e` (Playwright with accessibility checks)
+- **Unit Tests**: `npm run test:coverage` (49 tests, ≥80% coverage)
+- **E2E Tests**: `npm run e2e` (28 tests, Playwright with accessibility checks)
 - **Lint**: `npm run lint` (ESLint with TypeScript)
 - **Accessibility**: ≥90 a11y score required
+- **Threat Validation**: All 5 threat detection categories tested
 
 ### Preprod/Production Only
 - **Performance Testing**: Load times, frame rates, memory usage
@@ -63,10 +66,55 @@ npm run e2e             # E2E tests (auto-starts dev server)
 npm run lint            # Code quality checks
 ```
 
+## 🛡️ Threat Detection Capabilities
+
+### **Phase 3: Comprehensive Security Validation**
+
+The MCP Security Scorecard now includes advanced threat detection across 5 major security categories:
+
+#### **1. Trojan Server Detection (MCP-001 to MCP-003)**
+- **Integrity Verification**: Detects hash mismatches and tampering indicators
+- **Source Trust Analysis**: Validates server sources against trusted registries  
+- **Egress Monitoring**: Identifies suspicious network connections and data exfiltration paths
+- **Risk Levels**: Critical (integrity failure, suspicious egress), High (untrusted source)
+
+#### **2. Over-Privileged Tools Detection (MCP-004 to MCP-006)**
+- **Scope Analysis**: Validates tool permissions against intended functionality
+- **Principle of Least Privilege**: Ensures tools only have necessary access rights
+- **Context-Aware**: Adjusts severity based on data sensitivity (regulated, PII environments)
+- **Risk Levels**: High (filesystem access on non-file tools), Medium (mail access on non-mail tools)
+
+#### **3. Exfil Chain Detection (MCP-007 to MCP-010)**
+- **Graph Analysis**: Traces data flow paths through MCP server networks
+- **External Sink Detection**: Identifies suspicious external data destinations
+- **Trust Validation**: Flags untrusted nodes in data processing chains
+- **Chain Length Analysis**: Detects overly complex data flows that may indicate exfiltration
+- **Risk Levels**: Critical (external sinks, direct sensitive paths), High (untrusted nodes), Medium (long chains)
+
+#### **4. Identity Issues Detection (MCP-011 to MCP-016)**
+- **Shared Credential Detection**: Identifies tokens used across multiple services
+- **Token Lifecycle Management**: Validates TTL policies and rotation schedules
+- **Usage Pattern Analysis**: Detects excessive token usage and privilege violations
+- **Policy Compliance**: Ensures adherence to security best practices
+- **Risk Levels**: Critical (very long-lived tokens), High (shared tokens, no rotation), Medium (weak policies)
+
+#### **5. Memory Poisoning Detection (MCP-017 to MCP-021)**
+- **Sanitization Validation**: Ensures memory is properly cleared between sessions
+- **Retention Policy Analysis**: Validates data retention periods and lifecycle management
+- **Approval Gate Verification**: Ensures controlled access to persistent memory
+- **Risk Factor Correlation**: Detects multiple compounding security risks
+- **Risk Levels**: Critical (unsanitized persistent memory, very long retention), High (excessive retention), Medium (missing approval gates)
+
+### **Test Fixtures Available**
+- **10 Threat Fixtures**: 5 bad configurations + 5 good configurations for comprehensive testing
+- **Realistic Scenarios**: Based on actual MCP security vulnerabilities and best practices
+- **Context Integration**: All fixtures work with discovery wizard and context weighting
+
 ## 🏗️ Architecture
 
 ### Core Components
 - **Scoring Engine**: `lib/scoring.ts` - Pure functions for risk calculation
+- **Threat Detection**: `lib/threats/index.ts` - Comprehensive security validation engine
 - **UI Components**: `components/score/` - Reusable scorecard components
 - **Theme System**: `components/theme/` - Dark/light mode with next-themes
 - **Type Definitions**: `lib/types.ts` - TypeScript interfaces
@@ -77,10 +125,11 @@ npm run lint            # Code quality checks
 - **Severity Levels**: critical, high, medium, low
 
 ### Data Flow
-1. **Fixtures**: JSON files in `public/` directory
-2. **Scoring**: Weighted algorithm with environment multipliers
-3. **UI**: Real-time updates with accessible components
-4. **Export**: JSON download with metadata and timestamps
+1. **Threat Fixtures**: JSON configuration files in `public/threat-fixtures/` directory
+2. **Threat Detection**: Automated analysis using 5 detection engines
+3. **Scoring**: Weighted algorithm with environment multipliers and context weighting
+4. **UI**: Real-time updates with accessible components and severity indicators
+5. **Export**: JSON download with metadata, timestamps, and detailed findings
 
 ## 🎨 UI Quality Standards
 
@@ -104,11 +153,18 @@ v0-ui/
 ├── components/
 │   ├── score/             # Scorecard components
 │   ├── theme/             # Theme system
+│   ├── discovery/         # Discovery wizard components
 │   └── ui/                # shadcn/ui base components
 ├── lib/                   # Core logic and types
+│   ├── threats/           # Threat detection engines
+│   ├── discovery/         # Discovery wizard logic
+│   └── scoring.ts         # Risk scoring algorithm
 ├── public/                # Static assets and fixtures
+│   └── threat-fixtures/   # 10 threat test scenarios
 ├── rules/                 # Security rule definitions
 └── tests/                 # Unit and E2E tests
+    ├── unit/              # 49 unit tests
+    └── e2e/               # 28 E2E tests
 ```
 
 ### Key Commands
@@ -130,11 +186,22 @@ npm run e2e               # End-to-end tests
 
 ## 🚧 Future Roadmap (v1.5+)
 
-- **PDF Export**: Formatted security reports
+### **Advanced Threat Detection**
+- **Machine Learning**: Behavioral analysis for anomaly detection
+- **Custom Rules**: User-defined security policies and detection rules
+- **Real-time Monitoring**: Continuous threat detection and alerting
+
+### **Integration & Reporting**
+- **PDF Export**: Formatted security reports with executive summaries
 - **SIEM Integration**: Splunk, Azure Sentinel, Elastic queries
+- **API Endpoints**: RESTful API for programmatic access
+- **Webhook Support**: Real-time notifications for security events
+
+### **Enhanced Configuration**
 - **YAML Configuration**: Direct MCP server config parsing
 - **Authentication**: User accounts and persistent storage
 - **Live Scanning**: Real-time MCP server analysis
+- **Trend Analysis**: Historical security posture tracking
 
 ## 🤝 Contributing
 
