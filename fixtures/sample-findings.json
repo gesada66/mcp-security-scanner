@@ -1,0 +1,43 @@
+{
+  "profile": {
+    "environmentType": "production",
+    "dataSensitivity": "PII + Financial",
+    "complianceContext": ["soc2"]
+  },
+  "findings": [
+    {
+      "id": "MCP-001",
+      "title": "Public MCP server without auth",
+      "severity": "critical",
+      "rationale": "Unauthorised access risk; potential data exfiltration.",
+      "remediation": "Enforce auth; restrict network exposure; add rate limiting.",
+      "refs": []
+    },
+    {
+      "id": "MCP-002",
+      "title": "Missing request auditing",
+      "severity": "high",
+      "rationale": "Weak incident response; gaps in forensic trails.",
+      "remediation": "Enable structured logging; forward to SIEM; set retention.",
+      "refs": []
+    },
+    {
+      "id": "MCP-003",
+      "title": "No input schema validation",
+      "severity": "medium",
+      "rationale": "Risk of malformed inputs and injection vectors.",
+      "remediation": "Validate with Zod; reject invalid; sanitise strings.",
+      "refs": []
+    },
+    {
+      "id": "MCP-004",
+      "title": "No prefers-reduced-motion handling",
+      "severity": "low",
+      "rationale": "Accessibility and comfort concerns for motion-sensitive users.",
+      "remediation": "Add reduced-motion path; avoid layout-thrashing animations.",
+      "refs": []
+    }
+  ]
+}
+
+

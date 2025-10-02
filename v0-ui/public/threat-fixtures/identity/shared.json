@@ -1,0 +1,22 @@
+{
+  "auth": {
+    "tokens": [
+      {
+        "id": "shared-token-1",
+        "ttlSeconds": 86400,
+        "usedBy": ["service-a", "service-b", "service-c"]
+      },
+      {
+        "id": "long-lived-token",
+        "ttlSeconds": 31536001,
+        "usedBy": ["legacy-service"]
+      },
+      {
+        "id": "admin-token",
+        "ttlSeconds": 2592000,
+        "usedBy": ["admin-service", "backup-service", "monitoring-service", "audit-service", "reporting-service"]
+      }
+    ],
+    "rotationPolicyDays": 120
+  }
+}

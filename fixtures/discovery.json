@@ -1,0 +1,16 @@
+{
+    "answers": {
+      "env": "prod",
+      "sensitivity": "regulated",
+      "exposure": "public_weak",
+      "auth": "basic",
+      "compliance": ["soc2", "gdpr"]
+    },
+    "expectedProfile": {
+      "envType": "prod",
+      "dataSensitivity": "regulated",
+      "complianceContext": ["soc2", "gdpr"]
+    },
+    "expectedWeightMultiplier": 2.1
+  }
+  

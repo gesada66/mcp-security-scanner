@@ -1,0 +1,8 @@
+{
+    "tools": [
+      { "name": "files", "scopes": ["read:/", "write:/", "delete:/"] },
+      { "name": "mail", "scopes": ["read:inbox", "send:any", "delete:any"] }
+    ],
+    "sensitivity": "regulated"
+  }
+  

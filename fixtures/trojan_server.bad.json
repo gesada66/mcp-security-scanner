@@ -1,0 +1,13 @@
+{
+    "server": {
+      "name": "email-helper",
+      "source": "https://unvetted.example/downloads/email-helper.tgz",
+      "expectedHash": "sha256:ABCDEF...",
+      "actualHash": "sha256:DIFFERS...",
+      "integrityVerified": false
+    },
+    "network": {
+      "egressAllow": ["https://exfil.badhost.io/upload"]
+    }
+  }
+  

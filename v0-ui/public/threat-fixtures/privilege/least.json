@@ -1,0 +1,17 @@
+{
+  "tools": [
+    {
+      "name": "file-manager",
+      "scopes": ["filesystem"]
+    },
+    {
+      "name": "email-client",
+      "scopes": ["mail"]
+    },
+    {
+      "name": "api-gateway",
+      "scopes": ["api"]
+    }
+  ],
+  "sensitivity": "internal"
+}

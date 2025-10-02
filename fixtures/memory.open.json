@@ -1,0 +1,9 @@
+{
+    "memory": {
+      "persistent": true,
+      "sanitization": false,
+      "retentionHours": 720,
+      "approvalForWrites": false
+    }
+  }
+  

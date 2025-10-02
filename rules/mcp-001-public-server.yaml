@@ -1,0 +1,9 @@
+id: MCP-001
+title: Public MCP server without auth
+severity: critical
+rationale: Unauthorised access risk; potential data exfiltration.
+remediation: Enforce authentication, restrict network exposure, add rate limiting.
+refs:
+  - https://owasp.org/www-project-top-ten/
+
+

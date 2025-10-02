@@ -1,0 +1,15 @@
+{
+  "graph": {
+    "nodes": ["user-input", "memory-store", "trusted-api"],
+    "edges": [
+      ["user-input", "memory-store"],
+      ["memory-store", "trusted-api"]
+    ]
+  },
+  "trust": {
+    "user-input": true,
+    "memory-store": true,
+    "trusted-api": true
+  },
+  "externalSinks": []
+}

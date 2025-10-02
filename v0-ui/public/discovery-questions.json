@@ -1,0 +1,73 @@
+{
+  "questions": [
+    {
+      "id": "env",
+      "title": "Environment Type",
+      "explanation": "Which environment is this MCP deployment running in?",
+      "options": [
+        { "value": "prod", "label": "Production", "description": "Live user-facing systems" },
+        { "value": "staging", "label": "Staging / Test", "description": "Pre-production testing" },
+        { "value": "dev", "label": "Development", "description": "Developer workspace" },
+        { "value": "poc", "label": "Proof of Concept", "description": "Lab or experimental setup" },
+        { "value": "unknown", "label": "Unknown / Not sure", "description": "Unclear deployment classification" }
+      ],
+      "required": true
+    },
+    {
+      "id": "sensitivity",
+      "title": "Data Sensitivity",
+      "explanation": "What type of data does this MCP server handle?",
+      "options": [
+        { "value": "none", "label": "No sensitive data", "description": "Public or non-sensitive" },
+        { "value": "internal", "label": "Internal non-sensitive", "description": "Internal company data" },
+        { "value": "pii", "label": "Contains PII", "description": "Personally identifiable information" },
+        { "value": "regulated", "label": "Regulated data", "description": "HIPAA, PCI, GDPR or similar" },
+        { "value": "unknown", "label": "Unknown / Not sure", "description": "Unclear classification" }
+      ],
+      "required": true
+    },
+    {
+      "id": "exposure",
+      "title": "External Exposure",
+      "explanation": "How is the MCP server exposed to users or networks?",
+      "options": [
+        { "value": "private", "label": "Private network only", "description": "No external access" },
+        { "value": "private_ztna", "label": "Private + VPN/ZTNA", "description": "Access via VPN or ZTNA" },
+        { "value": "public_strong", "label": "Public (strong auth)", "description": "Internet accessible with strong auth" },
+        { "value": "public_weak", "label": "Public (weak/basic auth)", "description": "Internet accessible with weak auth" },
+        { "value": "unknown", "label": "Unknown / Not sure", "description": "Unclear exposure" }
+      ],
+      "required": true
+    },
+    {
+      "id": "auth",
+      "title": "Authentication Method",
+      "explanation": "How is access authenticated?",
+      "options": [
+        { "value": "mtls", "label": "mTLS", "description": "Mutual TLS" },
+        { "value": "oidc", "label": "OIDC / OAuth", "description": "Short-lived tokens" },
+        { "value": "apikey", "label": "API keys", "description": "Long-lived tokens" },
+        { "value": "basic", "label": "Basic / custom headers", "description": "Weak authentication" },
+        { "value": "none", "label": "No authentication", "description": "Open access" },
+        { "value": "unknown", "label": "Unknown / Not sure", "description": "Unclear method" }
+      ],
+      "required": true
+    },
+    {
+      "id": "compliance",
+      "title": "Compliance Context",
+      "explanation": "Which compliance frameworks apply (if any)?",
+      "options": [
+        { "value": "soc2", "label": "SOC 2", "description": "Trust Services Criteria" },
+        { "value": "iso27001", "label": "ISO 27001", "description": "ISMS scope" },
+        { "value": "hipaa", "label": "HIPAA", "description": "PHI handling" },
+        { "value": "pci", "label": "PCI DSS", "description": "Cardholder data" },
+        { "value": "gdpr", "label": "GDPR", "description": "Personal data processing" },
+        { "value": "none", "label": "None", "description": "No regulatory drivers" },
+        { "value": "unknown", "label": "Unknown / Not sure", "description": "Unclear compliance scope" }
+      ],
+      "multiple": true,
+      "required": false
+    }
+  ]
+}

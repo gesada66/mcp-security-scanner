@@ -1,0 +1,14 @@
+{
+  "profile": {
+    "environmentType": "development",
+    "dataSensitivity": "Internal",
+    "complianceContext": []
+  },
+  "findings": [
+    { "id": "MCP-101", "title": "Dev server open to LAN", "severity": "high" },
+    { "id": "MCP-102", "title": "Missing CORS restrictions", "severity": "medium" },
+    { "id": "MCP-103", "title": "Debug logging enabled", "severity": "low" }
+  ]
+}
+
+

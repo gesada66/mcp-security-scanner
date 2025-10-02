@@ -1,0 +1,12 @@
+{
+  "server": {
+    "name": "email-helper",
+    "source": "registry://trusted/email-helper@1.2.3",
+    "expectedHash": "sha256:ABCDEF...",
+    "actualHash": "sha256:ABCDEF...",
+    "integrityVerified": true
+  },
+  "network": {
+    "egressAllow": ["https://api.mail.vendor.com"]
+  }
+}

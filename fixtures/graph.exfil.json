@@ -1,0 +1,11 @@
+{
+    "graph": {
+      "nodes": ["agent", "mcpA", "mcpB"],
+      "edges": [
+        ["agent", "mcpA"],
+        ["mcpA", "mcpB"]
+      ]
+    },
+    "trust": {}
+  }
+  

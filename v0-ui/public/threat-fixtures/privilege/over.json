@@ -1,0 +1,17 @@
+{
+  "tools": [
+    {
+      "name": "calculator",
+      "scopes": ["filesystem", "compute", "network"]
+    },
+    {
+      "name": "weather",
+      "scopes": ["mail", "api", "database"]
+    },
+    {
+      "name": "analytics",
+      "scopes": ["filesystem", "mail", "api", "database", "network"]
+    }
+  ],
+  "sensitivity": "regulated"
+}

@@ -1,0 +1,9 @@
+id: MCP-002
+title: Missing request auditing
+severity: high
+rationale: Weak incident response; gaps in forensic trails.
+remediation: Enable structured logging, forward to SIEM, set retention.
+refs:
+  - https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html
+
+

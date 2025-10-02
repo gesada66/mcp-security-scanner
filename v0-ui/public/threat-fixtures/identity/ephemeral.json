@@ -1,0 +1,22 @@
+{
+  "auth": {
+    "tokens": [
+      {
+        "id": "ephemeral-token-1",
+        "ttlSeconds": 3600,
+        "usedBy": ["service-a"]
+      },
+      {
+        "id": "ephemeral-token-2",
+        "ttlSeconds": 1800,
+        "usedBy": ["service-b"]
+      },
+      {
+        "id": "short-lived-admin",
+        "ttlSeconds": 7200,
+        "usedBy": ["admin-service"]
+      }
+    ],
+    "rotationPolicyDays": 7
+  }
+}

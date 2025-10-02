@@ -1,0 +1,203 @@
+# Discovery rules for MCP Security Posture
+# Conservative severities, vendor-neutral
+
+## Environment
+- id: env.prod
+  title: Production environment
+  severity: high
+  rationale: Production directly impacts business continuity and customers.
+  remediation: Apply full MCP security baseline and continuous monitoring.
+  refs: [NIST CSF PR.IP-1, CIS MCP]
+
+- id: env.staging
+  title: Staging / Test environment
+  severity: medium
+  rationale: Staging reflects prod; vulnerabilities can leak into production.
+  remediation: Apply production-like controls; restrict external access.
+  refs: [CIS Benchmark]
+
+- id: env.dev
+  title: Development environment
+  severity: medium
+  rationale: Developers may bypass controls; risk of privilege creep.
+  remediation: Segregate dev from prod; sanitize data; enforce least privilege.
+  refs: [OWASP ASVS]
+
+- id: env.poc
+  title: Proof of Concept / Lab
+  severity: low
+  rationale: Non-critical but still attackable if exposed.
+  remediation: Isolate labs; never use real data.
+  refs: [NIST 800-53 CM-2]
+
+- id: env.unknown
+  title: Unknown environment
+  severity: high
+  rationale: Unclear environment context; assume worst-case.
+  remediation: Confirm deployment classification.
+  refs: []
+
+## Data Sensitivity
+- id: sensitivity.none
+  title: No sensitive data
+  severity: low
+  rationale: Misconfigurations less impactful without sensitive data.
+  remediation: Still enforce baseline security; avoid drift.
+  refs: [CIS MCP]
+
+- id: sensitivity.internal
+  title: Internal non-sensitive data
+  severity: medium
+  rationale: Internal leaks may cause reputational harm.
+  remediation: Limit exposure; enforce access controls.
+  refs: [NIST CSF ID.AM-5]
+
+- id: sensitivity.pii
+  title: Contains PII
+  severity: high
+  rationale: Personally Identifiable Information raises compliance risk.
+  remediation: Encrypt data; enable logging; monitor access.
+  refs: [GDPR Art. 32, NIST Privacy Framework]
+
+- id: sensitivity.regulated
+  title: Contains regulated data (HIPAA/PCI/GDPR)
+  severity: critical
+  rationale: Regulatory penalties possible if compromised.
+  remediation: Enforce strong encryption, strict IAM, detailed audit logs.
+  refs: [HIPAA Security Rule, PCI DSS Req. 10]
+
+- id: sensitivity.unknown
+  title: Unknown sensitivity
+  severity: high
+  rationale: Lack of clarity may hide compliance obligations.
+  remediation: Classify data; update risk posture accordingly.
+  refs: []
+
+## External Exposure
+- id: exposure.private
+  title: Private network only
+  severity: low
+  rationale: Isolated network reduces exposure.
+  remediation: Maintain segmentation; monitor insider threats.
+  refs: [NIST 800-53 SC-7]
+
+- id: exposure.private_ztna
+  title: Private + VPN/ZTNA
+  severity: medium
+  rationale: External access possible; depends on VPN/ZTNA security.
+  remediation: Harden VPN; enforce MFA; monitor logs.
+  refs: [Zero Trust Architecture]
+
+- id: exposure.public_strong
+  title: Public with strong authentication
+  severity: high
+  rationale: Internet exposure increases risk despite strong auth.
+  remediation: Harden TLS; rotate creds; apply WAF.
+  refs: [OWASP ASVS]
+
+- id: exposure.public_weak
+  title: Public with weak/basic authentication
+  severity: critical
+  rationale: Severe attack vector; easily brute-forced or bypassed.
+  remediation: Upgrade to OIDC or mTLS; enforce strong passwords.
+  refs: [NIST 800-63, OWASP Top 10]
+
+- id: exposure.unknown
+  title: Unknown exposure
+  severity: high
+  rationale: Unknown reachability = unpredictable attack surface.
+  remediation: Verify network topology and access paths.
+  refs: []
+
+## Authentication
+- id: auth.mtls
+  title: mTLS (mutual TLS)
+  severity: low
+  rationale: Strongest authentication; mitigates many risks.
+  remediation: Maintain cert rotation and strong PKI hygiene.
+  refs: [NIST SP 800-52]
+
+- id: auth.oidc
+  title: OIDC / OAuth (short-lived tokens)
+  severity: medium
+  rationale: Secure but requires correct implementation and rotation.
+  remediation: Enforce short token TTLs; validate claims.
+  refs: [OAuth 2.0 Security Best Current Practice]
+
+- id: auth.apikey
+  title: API keys / long-lived tokens
+  severity: high
+  rationale: Long-lived tokens easy to leak; no identity binding.
+  remediation: Replace with short-lived tokens; rotate often.
+  refs: [OWASP API Security Top 10]
+
+- id: auth.basic
+  title: Basic auth / custom headers
+  severity: critical
+  rationale: Weak and often unencrypted; trivial to compromise.
+  remediation: Replace with mTLS or OIDC; deprecate basic auth.
+  refs: [OWASP ASVS]
+
+- id: auth.none
+  title: No authentication
+  severity: critical
+  rationale: Total compromise possible.
+  remediation: Require authentication; enforce strong identity controls.
+  refs: [Zero Trust principles]
+
+- id: auth.unknown
+  title: Unknown authentication method
+  severity: high
+  rationale: Without clarity, assume high risk of weak auth.
+  remediation: Document and enforce strong method.
+  refs: []
+
+## Compliance
+- id: compliance.soc2
+  title: SOC 2 requirement
+  severity: medium
+  rationale: SOC 2 requires security controls and monitoring.
+  remediation: Map MCP config to SOC 2 trust principles.
+  refs: [AICPA SOC 2]
+
+- id: compliance.iso27001
+  title: ISO 27001 requirement
+  severity: medium
+  rationale: Requires ISMS controls and risk treatment.
+  remediation: Document controls; include MCP in ISMS scope.
+  refs: [ISO/IEC 27001]
+
+- id: compliance.hipaa
+  title: HIPAA requirement
+  severity: high
+  rationale: PHI handling requires strong controls.
+  remediation: Enforce access logging and encryption.
+  refs: [HIPAA Security Rule]
+
+- id: compliance.pci
+  title: PCI DSS requirement
+  severity: high
+  rationale: Payment data handling requires strict controls.
+  remediation: Restrict MCP role in cardholder data flows.
+  refs: [PCI DSS v4.0]
+
+- id: compliance.gdpr
+  title: GDPR requirement
+  severity: high
+  rationale: Personal data use requires data protection by design.
+  remediation: Enforce minimization and strong access controls.
+  refs: [GDPR Art. 32]
+
+- id: compliance.none
+  title: No compliance obligations
+  severity: low
+  rationale: No regulatory drivers reduce risk profile.
+  remediation: Still follow security best practices.
+  refs: [CIS MCP]
+
+- id: compliance.unknown
+  title: Unknown compliance context
+  severity: medium
+  rationale: Lack of clarity increases audit risk.
+  remediation: Clarify compliance scope with stakeholders.
+  refs: []

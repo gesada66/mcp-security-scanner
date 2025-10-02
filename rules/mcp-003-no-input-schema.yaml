@@ -1,0 +1,9 @@
+id: MCP-003
+title: No input schema validation
+severity: medium
+rationale: Risk of malformed inputs and injection vectors.
+remediation: Validate inputs (e.g., Zod), reject invalid, sanitise strings.
+refs:
+  - https://owasp.org/www-community/attacks/Injection
+
+

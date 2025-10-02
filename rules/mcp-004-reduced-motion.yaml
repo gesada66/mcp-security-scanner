@@ -1,0 +1,9 @@
+id: MCP-004
+title: No prefers-reduced-motion handling
+severity: low
+rationale: Accessibility and comfort concerns for motion-sensitive users.
+remediation: Add reduced-motion path and avoid layout-thrashing animations.
+refs:
+  - https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion
+
+

@@ -1,0 +1,19 @@
+{
+  "graph": {
+    "nodes": ["user-input", "memory-store", "file-system", "external-api", "suspicious-sink"],
+    "edges": [
+      ["user-input", "memory-store"],
+      ["memory-store", "file-system"],
+      ["file-system", "external-api"],
+      ["external-api", "suspicious-sink"]
+    ]
+  },
+  "trust": {
+    "user-input": true,
+    "memory-store": true,
+    "file-system": true,
+    "external-api": false,
+    "suspicious-sink": false
+  },
+  "externalSinks": ["suspicious-sink", "unknown-external"]
+}
