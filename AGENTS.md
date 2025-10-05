@@ -88,3 +88,43 @@
 - Final review/confirm step before applying.
 - Context banner summarizing answers above Scorecard.
 - Component library: shadcn/ui + Tailwind (semantic tokens).
+# (Phase 4)
+# Manage Targets — Feature Definition
+
+## Goal
+Replace “Configure Servers” with **Manage Targets** and introduce a unified, card-based UI for defining, viewing, and configuring MCP servers and (future) Agentic AI assets.
+
+## Scope
+- Button rename across dashboard UI and navigation.
+- New **Manage Targets** page:
+  - Lists all defined MCP/Agentic assets as interactive cards.
+  - Allows Add / Edit / Delete / Test Connection.
+  - Supports offline persistence (draft + local store).
+- No credentials stored in plain text; only credential aliases.
+- Export / Import JSON for portability.
+
+## Non-negotiables
+- No storage of raw secrets or tokens.
+- a11y ≥ 90 Lighthouse score in dev & prod.
+- Performance gates only in prod build.
+- Light-weight local persistence (IndexedDB + localStorage drafts).
+
+## Decision Rules
+- Local persistence now → server DB later (when multi-user).
+- Use existing dark-theme + Shadcn component system.
+- Autosave drafts automatically; explicit “Save” writes to IndexedDB.
+- Tooltip clarifies dual purpose: *“Add, edit, or configure servers and agents included in security assessments.”*
+
+## Trade-off Preferences
+| Priority | Decision |
+|-----------|-----------|
+| Simplicity > Complexity | Favor local store over backend |
+| Security > Convenience | No secret values persisted |
+| Consistency > Novelty | Match current UI components & spacing |
+
+## UI / UX Principles
+- Each target represented by a **card** with header, body, footer actions.
+- Cards visually aligned with Scorecard / Risk components.
+- Keyboard navigable; focus rings visible; tooltips accessible.
+- Light animations; minimal color accents consistent with theme palette.
+

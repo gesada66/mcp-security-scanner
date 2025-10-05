@@ -269,3 +269,49 @@ Successfully implemented comprehensive threat detection for 5 major MCP security
 - **Trend Analysis**: Historical security posture tracking
 - **Executive Dashboards**: High-level security metrics and KPIs
 - **Compliance Reporting**: Automated generation of audit reports
+# Phase 4
+# Manage Targets — Work Plan & Acceptance Criteria
+
+## Milestones
+
+### M1 — Rename Button
+- Rename “Configure Servers” → “Manage Targets”.
+- Tooltip: “Add, edit, or configure servers and agents included in security assessments.”
+- Verify appearance in all navigation / toolbars.
+
+### M2 — Target Cards & List View
+- Create responsive grid of TargetCards.
+- Each card shows:
+  - Name
+  - Status chip (Connected / Pending / Error)
+  - Type (MCP / Agent / Connector)
+  - Env (Prod/Dev)
+  - Sensitivity / Compliance badges
+  - Endpoint / Owner summary
+- Footer actions: Test • Edit • Run Scan • Delete.
+
+### M3 — Add / Edit Target Form
+- Form fields per Target JSON model.
+- Inline validation + connection test.
+- Autosave draft → `localStorage`.
+- On Save → write to IndexedDB.
+
+### M4 — Persistence & Portability
+- Implement `targetsStore.ts` (IndexedDB wrapper via Dexie or idb-keyval).
+- Add JSON Export / Import.
+- Ensure refresh-safe persistence.
+
+### M5 — QA & Accessibility
+- Verify keyboard navigation.
+- Lighthouse a11y ≥ 90.
+- Test Connection feedback visible (toast or inline message).
+- Verify no secrets stored (only credentialAlias references).
+- Perf check only on `next build && next start`.
+
+## Definition of Done
+- “Manage Targets” button live & functional.
+- Card grid renders saved targets from IndexedDB.
+- Add/Edit/Delete/Test actions work.
+- Draft autosave confirmed.
+- Export/Import functional.
+- All acceptance tests green.
