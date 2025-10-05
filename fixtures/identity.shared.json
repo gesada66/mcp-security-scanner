@@ -1,0 +1,9 @@
+{
+    "auth": {
+      "tokens": [
+        { "id": "t1", "ttlSeconds": 864000, "usedBy": ["toolA", "toolB"] }
+      ],
+      "rotationPolicyDays": 90
+    }
+  }
+  

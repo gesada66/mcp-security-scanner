@@ -8,15 +8,16 @@ export default defineConfig({
 		trace: "off",
 	},
 	projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-    webServer: {
-        command: process.platform === "win32"
-            ? "cross-env PORT=3001 next dev --turbopack"
-            : "PORT=3001 next dev --turbopack",
-        url: "http://localhost:3001",
-        reuseExistingServer: !process.env.CI,
-        cwd: __dirname,
-        timeout: 120_000,
-    },
+	    webServer: {
+	        command: process.platform === "win32"
+	            ? "next dev --turbopack"
+	            : "next dev --turbopack",
+	        url: "http://localhost:3001",
+	        reuseExistingServer: !process.env.CI,
+	        cwd: __dirname,
+	        timeout: 120_000,
+	        env: { PORT: "3001", NEXT_PUBLIC_DISCOVERY_WIZARD: "true" },
+	    },
 });
 
 

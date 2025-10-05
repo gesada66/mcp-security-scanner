@@ -126,3 +126,40 @@ Agents must consult these before answering implementation questions.
 ## Mapping & frameworks
 - MITRE ATLAS (agent/LLM tactics) — map findings to ATLAS IDs.
 - NIST AI RMF / Generative AI Profile — use for control mapping and expected evidence.
+# Phase 4
+# References — Manage Targets Phase
+
+## UI / Component References
+- Shadcn UI component library (Card, Tooltip, Dialog, Button, Input, Select).
+- Next.js 14 App Router documentation.
+- idb-keyval or Dexie documentation (IndexedDB helpers).
+
+## External Inspiration
+- SaaS “Asset Inventory” UI patterns (saasframe.io/security-page).
+- OWASP a11y testing guide (for form validation & focus management).
+- Example dark-theme dashboards from HaloLab / Behance for card spacing.
+
+## Local Persistence
+- localStorage: temporary draft state.
+- IndexedDB: long-term offline persistence.
+- Optional: JSON Export / Import.
+
+## Data Model Reference
+```json
+{
+  "id": "uuid",
+  "type": "mcp",
+  "name": "Finance MCP",
+  "endpoint": "https://mcp.example/api",
+  "env": "prod",
+  "sensitivity": "regulated",
+  "authMethod": "oidc",
+  "credentialAlias": "OIDC_MCP_FIN",
+  "tags": ["finance", "core"],
+  "owner": { "team": "platform", "email": "platsec@example.com" },
+  "compliance": ["soc2", "gdpr"],
+  "scan": { "includeInBatch": true, "frequency": "weekly" },
+  "status": "connected",
+  "createdAt": 0,
+  "updatedAt": 0
+}

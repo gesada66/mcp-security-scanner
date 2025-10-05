@@ -1,0 +1,8 @@
+{
+    "tools": [
+      { "name": "files", "scopes": ["read:/reports"] },
+      { "name": "mail", "scopes": ["send:templated"] }
+    ],
+    "sensitivity": "internal"
+  }
+  

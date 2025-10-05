@@ -12,10 +12,10 @@ interface ThemeSectionProps {
 
 export function ThemeSection({ children, variant = "light", className }: ThemeSectionProps) {
     const variants = {
-        hero: "bg-black text-white min-h-screen",
-        light: "bg-gray-50 text-gray-900 dark:bg-black dark:text-white",
-        dark: "bg-black text-white",
-        accent: "bg-yellow-400 text-black",
+        hero: "bg-background text-foreground min-h-screen",
+        light: "bg-background text-foreground",
+        dark: "bg-background text-foreground",
+        accent: "bg-primary text-primary-foreground",
     };
 
 	return (

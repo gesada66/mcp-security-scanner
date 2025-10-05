@@ -19,9 +19,9 @@ export function ThemeButton({
     ...rest
 }: ThemeButtonProps) {
 	const variants = {
-		primary: "bg-yellow-400 text-black hover:bg-yellow-300",
-		secondary: "border-2 border-white text-white hover:bg-white hover:text-black",
-		accent: "bg-black text-white hover:bg-slate-800",
+		primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+		secondary: "border-2 border-border bg-secondary text-secondary-foreground hover:bg-secondary/80",
+		accent: "bg-accent text-accent-foreground hover:bg-accent/80",
 	};
 
 	const sizes = {

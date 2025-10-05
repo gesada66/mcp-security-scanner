@@ -13,8 +13,8 @@ interface ThemeCardProps {
 
 export function ThemeCard({ children, title, variant = "default", className }: ThemeCardProps) {
 	const variants = {
-		default: "bg-white border-gray-200 text-gray-900 dark:bg-black dark:border-gray-800 dark:text-gray-100",
-		dark: "bg-black border-gray-800 text-white",
+		default: "bg-card border-border text-card-foreground",
+		dark: "bg-card border-border text-card-foreground",
 	};
 
 	return (

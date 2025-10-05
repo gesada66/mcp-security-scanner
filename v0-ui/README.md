@@ -86,12 +86,47 @@ Tests verify:
 - Export controls and clipboard functionality
 - Accessibility compliance (≥90 a11y score)
 
+### MCP-driven Acceptance (Playwright MCP)
+- We also verify key flows with the MCP Playwright browser (agent-controlled):
+  - Home loads, Discovery Wizard opens/closes
+  - Manage Targets add/test/edit/delete
+  - Navigation: Home → Manage Targets → Back
+
+Note: Standard Playwright CLI is still run for parity.
+
+### Accessibility & Performance (Lighthouse)
+```bash
+# Dev a11y audit (saves JSON report)
+npx lighthouse http://localhost:3001 --only-categories=accessibility --quiet --chrome-flags='--headless=new' --output=json --output-path=./lighthouse-a11y-report-phase4.json
+
+# Production perf audit (builds prod, starts server, runs Lighthouse, saves JSON)
+npm run perf:lighthouse
+```
+Reports: `lighthouse-a11y-report-phase4.json`, `lighthouse-perf-report-phase4.json`.
+
 ### Performance Testing
 Performance testing is **required only in preprod/prod environments** and not mandatory for local development or feature branches. This includes:
 - Load time measurements
 - Animation frame rates
 - Memory usage monitoring
 - Network request optimization
+
+## Phase 4 — Manage Targets
+
+### What’s new
+- Manage Targets page (rename from Configure Servers)
+- Targets grid/cards with status badges and actions
+- Add/Edit/Delete/Test Connection
+- Import/Export targets (JSON, schemaVersion 1)
+- Local persistence (IndexedDB) and draft autosave (localStorage)
+- Back button (consistent styling) to Scorecard
+
+### How to use
+1. Open `http://localhost:3001/manage-targets`.
+2. Use + Add Target to create a target; Save persists to IndexedDB.
+3. Test updates status to connected (mock in MVP).
+4. Import/Export buttons handle JSON portability.
+5. Use Back to return to the main Scorecard.
 
 ## Project Structure
 

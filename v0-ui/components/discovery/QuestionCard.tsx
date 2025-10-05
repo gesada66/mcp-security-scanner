@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { DiscoveryQuestion } from "@/lib/discovery/types";
 import { ThemeCard } from "@/components/theme/theme-card";
 import { ThemeButton } from "@/components/theme/theme-button";
+import { AnimatedOptionButton } from "@/components/ui/animated-option-button";
 import { cn } from "@/lib/utils";
 import { useId } from "react";
 
@@ -68,27 +69,19 @@ export function QuestionCard({
 					aria-labelledby={headingId}
 				>
 					{question.options.map(opt => (
-						<button
+						<AnimatedOptionButton
 							key={opt.value}
-							type="button"
+							value={opt.value}
+							label={opt.label}
+							description={opt.description}
+							isSelected={isSelected(opt.value)}
 							onClick={() =>
 								question.multiple
 									? toggleMulti(opt.value)
 									: onChange(opt.value)
 							}
-							className={cn(
-								"w-full text-left rounded-lg border p-4 transition-colors",
-								isSelected(opt.value)
-									? "border-yellow-400 bg-yellow-400/10"
-									: "border-slate-800 bg-slate-900 hover:bg-slate-800"
-							)}
-							aria-pressed={isSelected(opt.value)}
-						>
-							<div className="font-medium">{opt.label}</div>
-							{opt.description && (
-								<div className="text-sm text-white">{opt.description}</div>
-							)}
-						</button>
+							multiple={question.multiple}
+						/>
 					))}
 				</div>
 
