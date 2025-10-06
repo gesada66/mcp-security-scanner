@@ -14,6 +14,8 @@ export const AnimatedInput = forwardRef<HTMLSelectElement, AnimatedInputProps>(
   ({ label, error, className, children, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const prefersReducedMotion = useReducedMotion();
+    // Filter out drag props that conflict with framer-motion typing
+    const { onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, ...safeProps } = props as Omit<React.SelectHTMLAttributes<HTMLSelectElement>, never>;
 
     return (
       <div className="relative">
@@ -62,7 +64,7 @@ export const AnimatedInput = forwardRef<HTMLSelectElement, AnimatedInputProps>(
             duration: prefersReducedMotion ? 0 : 0.2,
             ease: "easeOut",
           }}
-          {...props}
+          {...safeProps}
         >
           {children}
         </motion.select>

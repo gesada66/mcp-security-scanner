@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { spawn } = require('child_process');
-const path = require('path');
 
 function run(cmd, args, opts = {}) {
   return new Promise((resolve, reject) => {
@@ -13,18 +12,26 @@ function run(cmd, args, opts = {}) {
   try {
     await run('npm', ['run', 'build:prod']);
     const server = spawn('npm', ['run', 'start:prod'], { shell: process.platform === 'win32' });
-    // wait a bit for server
+    // wait for server to start
     await new Promise(r => setTimeout(r, 5000));
-    await run('npx', ['lighthouse', 'http://localhost:3000', '--only-categories=performance', '--quiet', "--chrome-flags='--headless=new'", '--output=json', '--output-path=./lighthouse-perf-report-phase4.json']);
+    const flags = [
+      'http://localhost:3000',
+      '--only-categories=accessibility',
+      '--quiet',
+      "--chrome-flags=--headless=new --disable-gpu --no-sandbox --ignore-certificate-errors --allow-insecure-localhost --no-first-run --no-default-browser-check",
+      '--output=json',
+      '--output-path=./lighthouse-a11y-report-final.json'
+    ];
+    await run('npx', ['lighthouse', ...flags]);
     // kill server
     if (process.platform === 'win32') {
       spawn('taskkill', ['/F', '/IM', 'node.exe']);
     } else {
       server.kill('SIGINT');
     }
-    console.log('Lighthouse performance report written to lighthouse-perf-report-phase4.json');
+    console.log('Lighthouse accessibility report written to lighthouse-a11y-report-final.json');
   } catch (e) {
-    console.error('Performance run failed:', e.message);
+    console.error('Accessibility run failed:', e.message);
     process.exit(1);
   }
 })();

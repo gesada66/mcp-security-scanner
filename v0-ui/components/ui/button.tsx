@@ -42,12 +42,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	({ className, variant, size, asChild = false, ...props }, ref) => {
 		const Comp = asChild ? Slot : motion.button;
         // Filter out problematic props for motion.button
-        const { onAnimationStart, onAnimationEnd, onDrag, onDragEnd, onDragStart, ...safeProps } = props as any;
+        const { onAnimationStart, onAnimationEnd, onDrag, onDragEnd, onDragStart, ...safeProps } = props as Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, never>;
         
-        const motionProps = asChild ? {} : {
+        const motionProps: Record<string, unknown> = asChild ? {} : {
             whileHover: { scale: 1.02 },
             whileTap: { scale: 0.98 },
-            transition: { duration: 0.1, ease: "easeOut" }
         };
         
 		return (

@@ -96,13 +96,21 @@ Note: Standard Playwright CLI is still run for parity.
 
 ### Accessibility & Performance (Lighthouse)
 ```bash
-# Dev a11y audit (saves JSON report)
-npx lighthouse http://localhost:3001 --only-categories=accessibility --quiet --chrome-flags='--headless=new' --output=json --output-path=./lighthouse-a11y-report-phase4.json
+# Accessibility (recommended): runs against a production build on :3000 and saves JSON
+npm run a11y:lighthouse
 
-# Production perf audit (builds prod, starts server, runs Lighthouse, saves JSON)
+# Performance (prod-only gate): builds prod, starts server, runs Lighthouse, saves JSON
 npm run perf:lighthouse
 ```
-Reports: `lighthouse-a11y-report-phase4.json`, `lighthouse-perf-report-phase4.json`.
+Reports:
+- Accessibility (dev/prod): `lighthouse-a11y-report-final.json`
+- Performance (prod): `lighthouse-perf-report-phase4.json`
+
+Notes:
+- Run these from `v0-ui/`.
+- For local dev exploration only, you can also run Lighthouse directly:
+  - `npx lighthouse http://localhost:3001 --only-categories=accessibility --quiet --chrome-flags='--headless=new' --output=json --output-path=./lighthouse-a11y-report-dev.json`
+  - Use this for quick checks; the acceptance gate uses the scripted prod run above (a11y ≥ 90).
 
 ### Performance Testing
 Performance testing is **required only in preprod/prod environments** and not mandatory for local development or feature branches. This includes:

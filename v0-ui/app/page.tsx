@@ -270,7 +270,6 @@ useMemo(() => score, [score]);
                                     label="MCP Server URL"
                                     value={mcpServerUrl}
                                     onChange={(e) => setMcpServerUrl(e.target.value)}
-                                    placeholder="https://your-mcp-server.com"
                                     className="w-full"
                                 />
                             </div>
@@ -327,7 +326,7 @@ useMemo(() => score, [score]);
                                         <div key={index} className="flex justify-between items-center text-sm">
                                             <span className="text-foreground truncate max-w-[300px]">{scan.url}</span>
                                             <div className="flex items-center gap-2">
-                                                <Badge variant={scan.score > 80 ? "default" : scan.score > 60 ? "secondary" : "destructive"}>
+                                                <Badge variant={scan.score > 80 ? "default" : "outline"}>
                                                     {scan.score}
                                                 </Badge>
                                                 <span className="text-muted-foreground">

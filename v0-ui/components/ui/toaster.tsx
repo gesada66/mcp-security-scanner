@@ -38,41 +38,13 @@ export function Toaster() {
 }
 
 // Convenience functions for different toast types
-export const createToast = {
-  success: (title: string, description?: string) => {
-    const { toast } = useToast();
-    return toast({
-      title,
-      description,
-      variant: "success",
-      icon: ToastIcons.success,
-    });
-  },
-  error: (title: string, description?: string) => {
-    const { toast } = useToast();
-    return toast({
-      title,
-      description,
-      variant: "destructive",
-      icon: ToastIcons.error,
-    });
-  },
-  warning: (title: string, description?: string) => {
-    const { toast } = useToast();
-    return toast({
-      title,
-      description,
-      variant: "warning",
-      icon: ToastIcons.warning,
-    });
-  },
-  info: (title: string, description?: string) => {
-    const { toast } = useToast();
-    return toast({
-      title,
-      description,
-      variant: "info",
-      icon: ToastIcons.info,
-    });
-  },
-};
+// Hook-based helpers (valid usage of hooks inside a hook)
+export function useCreateToast() {
+  const { toast } = useToast();
+  return {
+    success: (title: string, description?: string) => toast({ title, description, variant: "success", icon: ToastIcons.success }),
+    error: (title: string, description?: string) => toast({ title, description, variant: "destructive", icon: ToastIcons.error }),
+    warning: (title: string, description?: string) => toast({ title, description, variant: "warning", icon: ToastIcons.warning }),
+    info: (title: string, description?: string) => toast({ title, description, variant: "info", icon: ToastIcons.info }),
+  };
+}
