@@ -113,6 +113,7 @@ export function TargetForm(props: { initialId?: string; onClose?: () => void; on
                 status: "pending",
                 createdAt: now,
                 updatedAt: now,
+                source: "manual",
             };
             await saveTarget(target);
             window.dispatchEvent(new Event("targets:updated"));

@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-	// Filter out conflicting props for motion.div
-	const { onDrag, onDragEnd, onDragStart, ...safeProps } = props as any;
+    // Filter out conflicting props for motion.div
+	const { onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, ...safeProps } = props as Omit<React.HTMLAttributes<HTMLDivElement>, never>;
 	
 	return (
 		<motion.div

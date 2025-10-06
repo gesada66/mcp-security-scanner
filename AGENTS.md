@@ -128,3 +128,139 @@ Replace “Configure Servers” with **Manage Targets** and introduce a unified,
 - Keyboard navigable; focus rings visible; tooltips accessible.
 - Light animations; minimal color accents consistent with theme palette.
 
+## Phase 5 — Setup, Installation, and Test Execution (for Cursor Agent)
+
+- Actions are local-only; never upload raw configs. Unknowns handled conservatively.
+
+### Install
+```bash
+# From repo root
+cd v0-ui
+
+# Install dependencies
+npm ci
+
+# Phase 5 parser dependency
+npm i yaml
+```
+
+### Develop
+```bash
+# Start dev server on port 3001
+npm run dev:3001
+# Open http://localhost:3001
+```
+
+### Quality Gates
+- Lint + build must pass.
+- Unit coverage ≥ 80% for core logic (`lib/scoring.ts`, adapters, `scanRunner.ts`).
+- A11y Lighthouse ≥ 90 (dev).
+- E2E: Phase 5 import/scan flow must pass locally and in CI.
+- Perf: Only required on production build.
+
+### Lint, Typecheck, Build
+```bash
+npm run lint
+npm run build
+```
+
+### Unit Tests
+```bash
+# With coverage (saves lcov)
+npm run test:coverage
+```
+
+### E2E Tests (Playwright)
+```bash
+# Ensure dev server is running on 3001
+npm run dev:3001
+
+# Run E2E
+npm run e2e
+
+# Optional: specify base URL
+E2E_BASE_URL=http://localhost:3001 npm run e2e
+```
+
+- E2E artefacts: screenshots/videos on failure saved under `v0-ui/test-results/`.
+- After each run, terminate sessions cleanly via Ctrl+C.
+
+### Accessibility & Performance
+```bash
+# Dev a11y audit (saves JSON report)
+npx lighthouse http://localhost:3001 --only-categories=accessibility --quiet --chrome-flags='--headless=new' --output=json --output-path=./lighthouse-a11y-report-final.json
+
+# Production perf audit (build, start, run)
+npm run perf:lighthouse
+```
+
+### Phase 5 Acceptance (must pass)
+- Import MCP config preview shows redaction count + unknown keys.
+- On confirm: target stored with `source:"config-import"`, optional static scan.
+- `runStaticScan()` deterministic; bad file → clear error, no partial persistence.
+
+### Security & Persistence
+- Redaction happens locally; raw secrets are never persisted.
+- Only non-sensitive metadata is stored: IndexedDB (targets), localStorage (drafts).
+- Imported targets must include `source:"config-import"` and optional `sourceFiles`.
+
+### Operational Notes
+- Unknown values are treated conservatively (worst case) in scoring.
+- Static scans are deterministic: repeated imports produce identical findings/score.
+- Bad imports: show a clear error with filename; do not persist any partial state.
+
+### CI Invocation
+```bash
+# Lint + build + unit tests + E2E (dev server required for E2E)
+npm run lint
+npm run build
+npm run test:coverage
+npm run dev:3001 &
+E2E_BASE_URL=http://localhost:3001 npm run e2e
+# Stop the dev server (Windows PowerShell)
+Stop-Process -Name node -ErrorAction SilentlyContinue
+```
+
+### Teardown Discipline
+- After E2E, terminate the dev server with Ctrl+C (or Stop-Process on Windows) to avoid orphaned processes.
+- Ensure screenshots/videos on failure are saved under `v0-ui/test-results/`.
+
+### Accessibility & Reports
+- Keep Lighthouse a11y ≥ 90 in dev; save the report to `v0-ui/lighthouse-a11y-report-final.json`.
+- Production performance audit only on production builds via `npm run perf:lighthouse`.
+
+### File Locations (Phase 5)
+- Adapters: `v0-ui/adapters/parseMcpJson.ts`, `v0-ui/adapters/parseMcpYaml.ts`, `v0-ui/adapters/redactSecrets.ts`
+- Scan runner: `v0-ui/lib/scanRunner.ts`
+- E2E: `v0-ui/tests/e2e/phase5-import-config.spec.ts`
+- Fixtures: `fixtures/vetted_server.good.json`, `fixtures/trojan_server.bad.json`
+- Docs: `AGENTS.md`, `TASKS.md`, `REFERENCES.md`, `v0-ui/README.md`
+
+### Acceptance Checklist (Cursor must verify)
+- Import preview shows redaction count + unknown keys; keyboard accessible.
+- Confirm persists target with `source:"config-import"`; optional static scan updates card with findings/score.
+- Deterministic outputs across repeated imports.
+- Error path: clear message with filename; no partial persistence.
+- Quality gates pass (lint, build, unit ≥80% core coverage, E2E green, a11y ≥90).
+
+### Teardown Discipline
+- After E2E, terminate the dev server with Ctrl+C (or Stop-Process on Windows) to avoid orphaned processes.
+- Ensure screenshots/videos on failure are saved under `v0-ui/test-results/`.
+
+### Accessibility & Reports
+- Keep Lighthouse a11y ≥ 90 in dev; save the report to `v0-ui/lighthouse-a11y-report-final.json`.
+- Production performance audit only on production builds via `npm run perf:lighthouse`.
+
+### File Locations (Phase 5)
+- Adapters: `v0-ui/adapters/parseMcpJson.ts`, `v0-ui/adapters/parseMcpYaml.ts`, `v0-ui/adapters/redactSecrets.ts`
+- Scan runner: `v0-ui/lib/scanRunner.ts`
+- E2E: `v0-ui/tests/e2e/phase5-import-config.spec.ts`
+- Fixtures: `fixtures/vetted_server.good.json`, `fixtures/trojan_server.bad.json`
+- Docs: `AGENTS.md`, `TASKS.md`, `REFERENCES.md`, `v0-ui/README.md`
+
+### Acceptance Checklist (Cursor must verify)
+- Import preview shows redaction count + unknown keys; keyboard accessible.
+- Confirm persists target with `source:"config-import"`; optional static scan updates card with findings/score.
+- Deterministic outputs across repeated imports.
+- Error path: clear message with filename; no partial persistence.
+- Quality gates pass (lint, build, unit ≥80% core coverage, E2E green, a11y ≥90).

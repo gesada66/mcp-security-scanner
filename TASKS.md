@@ -315,3 +315,55 @@ Successfully implemented comprehensive threat detection for 5 major MCP security
 - Draft autosave confirmed.
 - Export/Import functional.
 - All acceptance tests green.
+
+---
+
+## 2) `/TASKS.md` — append **Phase 5** block
+```md
+## Phase 5 — MCP Config Import & Static Scan
+
+### Milestone 5.1 — Parsers & Redaction (1 day)
+- [ ] Implement adapters in `/v0-ui/adapters/`:
+  - `parseMcpJson.ts`, `parseMcpYaml.ts`
+  - `parseManifest.ts` (server.manifest.json → enrich)
+  - `redactSecrets.ts` (regex-based redaction; unit-tested)
+- [ ] Extend zod schema in `lib/targets.schema.ts` to accept `source`, `sourceFiles`, timestamps.
+- Acceptance:
+  - Unit: valid file → canonical JSON; invalid → errors; secret redaction tested.
+  - No secrets persisted.
+
+### Milestone 5.2 — UI Integration (1 day)
+- [ ] Add **Import MCP Config** in Manage Targets (`components/targets/import-export.tsx` dropdown).
+- [ ] Preview modal with diff + unknown keys collapsible + “Run Static Scan now?” checkbox.
+- [ ] On confirm → save → optional static scan → toast.
+- Acceptance:
+  - A11y ≥ 90; keyboard works; reduced-motion respected.
+  - IndexedDB stores target with `source:"config-import"`; shows badge on card.
+
+### Milestone 5.3 — Static Scan Wiring (0.5 day)
+- [ ] `lib/scanRunner.ts` (new): compose parsed config → `detectThreats()` → `scoring.ts`.
+- [ ] Update target with `lastStaticScanAt`, `lastStaticFindings`, `lastStaticScore`.
+- Acceptance:
+  - Deterministic outputs on repeated imports.
+  - Error state handled (bad file → clear message).
+
+### Milestone 5.4 — Playwright E2E via MCP in Cursor (0.5–1 day)
+- [ ] E2E: `tests/e2e/phase5-import-config.spec.ts`
+  - Launch app (MCP Playwright). (May vary by account/version)
+  - Import `fixtures/vetted_server.good.json` → preview → confirm → saved target visible.
+  - Run static scan → assert badge “Static findings: 0–N” and score updated.
+  - Re-import `trojan_server.bad.json` → assert findings > 0.
+- Acceptance:
+  - E2E passes locally & in CI.
+  - Screenshots on failure saved to `test-results/`.
+
+### Milestone 5.5 — Docs & QA (0.5 day)
+- [ ] Update README: “Config Import” + privacy note.
+- [ ] Add `/rules/PHASE5-SPEC.md` (this spec).
+- [ ] QA checklist run; add test cases to `fixtures/TEST_PLAN.md`.
+- Acceptance:
+  - All tests green (unit + e2e + lint).
+  - Docs merged & reviewed.
+
+### Done Criteria
+- Users can import MCP config files; secrets are redacted; targets created; local static scan runs; E2E green.

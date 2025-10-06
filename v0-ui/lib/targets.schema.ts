@@ -24,6 +24,12 @@ export const TargetSchema = z.object({
   status: z.enum(["connected", "pending", "error"]).default("pending"),
   createdAt: z.number().nonnegative(),
   updatedAt: z.number().nonnegative(),
+  // Phase 5 metadata for imported MCP configs
+  source: z.enum(["manual", "config-import"]).default("manual"),
+  sourceFiles: z.array(z.string().min(1)).optional(),
+  lastStaticScan: z
+    .object({ findingsCount: z.number().nonnegative(), score: z.number().min(0).max(100) })
+    .optional(),
 }).refine(obj => {
   const kv = JSON.stringify(obj);
   return !SecretLike.test(kv);

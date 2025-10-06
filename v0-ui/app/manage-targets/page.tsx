@@ -10,6 +10,7 @@ import { ThemeButton } from "@/components/theme/theme-button";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/toaster";
 import { Info } from "lucide-react";
+import { ImportExport } from "@/components/targets/import-export";
 
 export default function ManageTargetsPage() {
   const [showForm, setShowForm] = React.useState(false);
@@ -39,9 +40,10 @@ export default function ManageTargetsPage() {
     URL.revokeObjectURL(url);
   }
 
+  // legacy import retained for export file flow; not used for MCP config imports
   async function handleImport(file: File) {
     const text = await file.text();
-    const json = JSON.parse(text);
+    const json = JSON.parse(text) as unknown;
     const existing = await listTargets();
     const merged = importTargetsMerge(existing as Target[], json);
     for (const t of merged) await saveTarget(t as Target);
@@ -63,13 +65,7 @@ export default function ManageTargetsPage() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeButton variant="secondary" onClick={() => { window.location.href = "/"; }} aria-label="Back">Back</ThemeButton>
-          <label className="inline-flex">
-            <input type="file" accept="application/json" className="hidden" onChange={e => {
-              const f = e.target.files?.[0];
-              if (f) handleImport(f);
-            }} />
-            <Button asChild variant="secondary" data-testid="import-btn"><span tabIndex={0}>Import</span></Button>
-          </label>
+          <ImportExport />
           <Button data-testid="add-target-btn" onClick={() => { setEditId(undefined); setShowForm(true); }}>+ Add Target</Button>
           <Button variant="secondary" data-testid="export-btn" onClick={handleExport}>Export</Button>
         </div>

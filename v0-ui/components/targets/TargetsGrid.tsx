@@ -2,6 +2,7 @@
 
 import React from "react";
 import { listTargets, deleteTarget, getTarget, saveTarget } from "@/lib/targetsStore";
+import type { Target } from "@/lib/targets.schema";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TargetCard } from "./TargetCard";
@@ -10,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 export function TargetsGrid() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const [targets, setTargets] = React.useState<any[]>([]);
+  const [targets, setTargets] = React.useState<import("@/lib/targets.schema").Target[]>([]);
   const { toast } = useToast();
 
   const load = React.useCallback(async () => {
@@ -49,8 +50,8 @@ export function TargetsGrid() {
     // Mock connectivity test: mark as connected and update timestamp
     const t = await getTarget(id);
     if (!t) return;
-    const updated = { ...t, status: "connected", updatedAt: Date.now() };
-    await saveTarget(updated);
+    const updated: Target = { ...t, status: "connected", updatedAt: Date.now() } as Target;
+    await saveTarget(updated as Target);
     toast({ title: "Connection successful", description: `${t.name} is reachable` });
     window.dispatchEvent(new Event("targets:updated"));
   }
